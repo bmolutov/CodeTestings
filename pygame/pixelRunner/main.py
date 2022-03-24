@@ -33,6 +33,9 @@ while True:
         if event.type == pygame.QUIT: # pygame.QUIT stands for x button
             pygame.quit() # opposite to pygame.init()
             sys.exit() # preventing an error (after pygame.quit() main loop must also be closed)
+        if event.type == pygame.MOUSEMOTION:
+            if player_rectangle.collidepoint(event.pos):
+                print("collision!")
 
     screen.blit(sky_surface, (0, 0)) # drawing the surface at the topside of its parent
     screen.blit(ground_surface, (0, 300))
@@ -44,6 +47,6 @@ while True:
 
     screen.blit(snail_surface, snail_rectangle)
     screen.blit(player_surface, player_rectangle) # we are taking a surface and placing it on the position of rectangle
-
+    
     pygame.display.update() # updates that display surface
     clock.tick(60) # setting fps (update the display at most 60 times per second)
