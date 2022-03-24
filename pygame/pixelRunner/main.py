@@ -38,11 +38,11 @@ while True:
             sys.exit() # preventing an error (after pygame.quit() main loop must also be closed)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if player_rect.collidepoint(pygame.mouse.get_pos()):
+            if player_rect.collidepoint(pygame.mouse.get_pos()) and player_rect.bottom >= 300:
                 player_gravity = -20
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
                 player_gravity = -20
 
     screen.blit(sky_surf, (0, 0)) # drawing the surface at the topside of its parent
@@ -61,7 +61,10 @@ while True:
     # Player
     player_gravity += 1
     player_rect.y += player_gravity
+    if player_rect.bottom >= 300: player_rect.bottom = 300
     screen.blit(player_surf, player_rect) # we are taking a surface and placing it on the position of rectangle
+
+    keys = pygame.key.get_pressed()
     
     pygame.display.update() # updates that display surface
     clock.tick(60) # setting fps (update the display at most 60 times per second)
