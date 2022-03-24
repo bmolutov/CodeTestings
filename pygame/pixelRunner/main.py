@@ -1,6 +1,12 @@
 import pygame
 import sys
 
+def display_score():
+    current_time = pygame.time.get_ticks() - start_time
+    score_surf = test_font.render(f'Score: {current_time // 1000}', False, (64, 64, 64))
+    score_rect = score_surf.get_rect(center = (400, 50))
+    screen.blit(score_surf, score_rect)
+
 # starts pygame, and helps run our project
 pygame.init()
 
@@ -16,13 +22,10 @@ clock = pygame.time.Clock()
 # creating font
 test_font = pygame.font.Font('../assets/font/Pixeltype.ttf', 50)
 game_active = True
+start_time = 0
 
-# test_surface = pygame.Surface((100, 200)) # creating regular suface
-# test_surface.fill('Red') # filling it by color
 sky_surf = pygame.image.load('../assets/graphics/Sky.png').convert() # convert() is used to optimize working with external images
 ground_surf = pygame.image.load('../assets/graphics/ground.png').convert()
-score_surf = test_font.render('My game', False, (64, 64, 64)) # it creates a suface
-score_rect = score_surf.get_rect(center=(400, 50))
 
 snail_surf = pygame.image.load('../assets/graphics/snail/snail1.png').convert_alpha()
 snail_rect = snail_surf.get_rect(bottomright=(600, 300))
@@ -52,13 +55,13 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
                 snail_rect.x = 600
+                start_time = pygame.time.get_ticks()
 
     if game_active:
         screen.blit(sky_surf, (0, 0)) # drawing the surface at the topside of its parent
         screen.blit(ground_surf, (0, 300))
-        pygame.draw.rect(screen, '#c0e8ec', score_rect, border_radius=10) # drawing a border
         
-        screen.blit(score_surf, score_rect)
+        display_score()
 
         snail_rect.x -= 4
         if snail_rect.right <= 0:
