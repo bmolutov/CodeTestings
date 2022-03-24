@@ -16,6 +16,8 @@ clock = pygame.time.Clock()
 # creating font
 test_font = pygame.font.Font('../assets/font/Pixeltype.ttf', 50)
 
+# test_surface = pygame.Surface((100, 200)) # creating regular suface
+# test_surface.fill('Red') # filling it by color
 sky_surf = pygame.image.load('../assets/graphics/Sky.png').convert() # convert() is used to optimize working with external images
 ground_surf = pygame.image.load('../assets/graphics/ground.png').convert()
 score_surf = test_font.render('My game', False, (64, 64, 64)) # it creates a suface
@@ -34,9 +36,11 @@ while True:
         if event.type == pygame.QUIT: # pygame.QUIT stands for x button
             pygame.quit() # opposite to pygame.init()
             sys.exit() # preventing an error (after pygame.quit() main loop must also be closed)
-        if event.type == pygame.MOUSEMOTION:
-            if player_rect.collidepoint(event.pos):
-                print("collision!")
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                print('jump')
+        if event.type == pygame.KEYUP:
+            print('key up')
 
     screen.blit(sky_surf, (0, 0)) # drawing the surface at the topside of its parent
     screen.blit(ground_surf, (0, 300))
@@ -54,4 +58,3 @@ while True:
     
     pygame.display.update() # updates that display surface
     clock.tick(60) # setting fps (update the display at most 60 times per second)
-    
