@@ -114,6 +114,14 @@ pygame.time.set_timer(snail_animation_timer, 500)
 fly_animation_timer = pygame.USEREVENT + 3
 pygame.time.set_timer(fly_animation_timer, 200)
 
+# Music
+jump_sound = pygame.mixer.Sound('../assets/audio/jump.mp3')
+jump_sound.set_volume(0.05)
+
+bg_music = pygame.mixer.Sound('../assets/audio/music.wav')
+bg_music.set_volume(0.05)
+bg_music.play()
+
 while True:
     # draw all our elements
     # update everything
@@ -126,10 +134,12 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if player_rect.collidepoint(pygame.mouse.get_pos()) and player_rect.bottom >= 300:
                     player_gravity = -20
+                    jump_sound.play()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
                     player_gravity = -20
+                    jump_sound.play()
         else:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
