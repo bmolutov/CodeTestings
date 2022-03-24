@@ -15,7 +15,10 @@ pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()
 # creating font
 test_font = pygame.font.Font('../assets/font/Pixeltype.ttf', 50)
+game_active = True
 
+# test_surface = pygame.Surface((100, 200)) # creating regular suface
+# test_surface.fill('Red') # filling it by color
 sky_surf = pygame.image.load('../assets/graphics/Sky.png').convert() # convert() is used to optimize working with external images
 ground_surf = pygame.image.load('../assets/graphics/ground.png').convert()
 score_surf = test_font.render('My game', False, (64, 64, 64)) # it creates a suface
@@ -37,34 +40,43 @@ while True:
             pygame.quit() # opposite to pygame.init()
             sys.exit() # preventing an error (after pygame.quit() main loop must also be closed)
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if player_rect.collidepoint(pygame.mouse.get_pos()) and player_rect.bottom >= 300:
-                player_gravity = -20
+        if game_active:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if player_rect.collidepoint(pygame.mouse.get_pos()) and player_rect.bottom >= 300:
+                    player_gravity = -23
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
-                player_gravity = -20
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
+                    player_gravity = -23
+        else:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                game_active = True
+                snail_rect.x = 600
 
-    screen.blit(sky_surf, (0, 0)) # drawing the surface at the topside of its parent
-    screen.blit(ground_surf, (0, 300))
-    # pygame.draw.rect(screen, 'Pink', score_rect) # drawing a rectangle
-    pygame.draw.rect(screen, '#c0e8ec', score_rect, border_radius=10) # drawing a border
-    
-    screen.blit(score_surf, score_rect)
+    if game_active:
+        screen.blit(sky_surf, (0, 0)) # drawing the surface at the topside of its parent
+        screen.blit(ground_surf, (0, 300))
+        pygame.draw.rect(screen, '#c0e8ec', score_rect, border_radius=10) # drawing a border
+        
+        screen.blit(score_surf, score_rect)
 
-    snail_rect.x -= 4
-    if snail_rect.right <= 0:
-        snail_rect.left = 800
+        snail_rect.x -= 4
+        if snail_rect.right <= 0:
+            snail_rect.left = 800
 
-    screen.blit(snail_surf, snail_rect)
+        screen.blit(snail_surf, snail_rect)
 
-    # Player
-    player_gravity += 1
-    player_rect.y += player_gravity
-    if player_rect.bottom >= 300: player_rect.bottom = 300
-    screen.blit(player_surf, player_rect) # we are taking a surface and placing it on the position of rectangle
+        # Player
+        player_gravity += 1
+        player_rect.y += player_gravity
+        if player_rect.bottom >= 300: player_rect.bottom = 300
+        screen.blit(player_surf, player_rect) # we are taking a surface and placing it on the position of rectangle
 
-    keys = pygame.key.get_pressed()
+        # collision
+        if snail_rect.colliderect(player_rect):
+            game_active = False
+    else:
+        screen.fill('Red')
     
     pygame.display.update() # updates that display surface
     clock.tick(60) # setting fps (update the display at most 60 times per second)
