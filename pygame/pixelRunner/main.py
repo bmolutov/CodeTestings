@@ -16,9 +16,12 @@ clock = pygame.time.Clock()
 # creating font
 test_font = pygame.font.Font('../assets/font/Pixeltype.ttf', 50)
 
-sky_surface = pygame.image.load('../assets/graphics/Sky.png')
-ground_surface = pygame.image.load('../assets/graphics/ground.png')
+sky_surface = pygame.image.load('../assets/graphics/Sky.png').convert() # convert() is used to optimize working with external images
+ground_surface = pygame.image.load('../assets/graphics/ground.png').convert()
 text_surface = test_font.render('My game', False, 'Black') # it creates a suface
+
+snail_surface = pygame.image.load('../assets/graphics/snail/snail1.png').convert_alpha()
+snail_x_pos = 600
 
 while True:
     # draw all our elements
@@ -31,6 +34,10 @@ while True:
     screen.blit(sky_surface, (0, 0)) # drawing the surface at the topside of its parent
     screen.blit(ground_surface, (0, 300))
     screen.blit(text_surface, (300, 50))
+    snail_x_pos -= 4
+    if snail_x_pos == 0:
+        snail_x_pos = 800
+    screen.blit(snail_surface, (snail_x_pos, 250))
 
     pygame.display.update() # updates that display surface
     clock.tick(60) # setting fps (update the display at most 60 times per second)
